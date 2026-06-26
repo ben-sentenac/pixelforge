@@ -7,10 +7,15 @@ pf_widget_git_render() {
 
     local branch
     local dirty
+    local ahead
+    local behind
     local marker=""
+    local sync=""
 
     branch="$(pf_model_get "git.branch")"
     dirty="$(pf_model_get "git.dirty")"
+    ahead="$(pf_model_get "git.ahead")"
+    behind="$(pf_model_get "git.behind")"
 
     if [[ -z "$branch" ]]; then
         branch="detached"
@@ -20,5 +25,13 @@ pf_widget_git_render() {
         marker=" *"
     fi
 
-    printf "🌿 %s%s\n" "$branch" "$marker"
+    if [[ "$ahead" != "0" ]]; then
+        sync+=" ↑${ahead}"
+    fi
+
+    if [[ "$behind" != "0" ]]; then
+        sync+=" ↓${behind}"
+    fi
+
+    printf "🌿 %s%s%s\n" "$branch" "$marker" "$sync"
 }

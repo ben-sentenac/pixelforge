@@ -88,3 +88,34 @@ Configuration
       │
       ▼
  Terminal
+
+ ## architecture globale
+
+ Bash
+ │
+ ▼
+PROMPT_COMMAND
+ │
+ ▼
+pf_prompt_update()
+ │
+ ▼
+pf_engine_render()
+ │
+ ▼
+Bootstrap
+ │
+ ▼
+Providers
+ │
+ ▼
+Render Model
+ │
+ ▼
+Widgets
+ │
+ ▼
+Layout
+ │
+ ▼
+PS1
