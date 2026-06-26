@@ -12,5 +12,8 @@ source src/widgets/user.sh
 source src/widgets/host.sh
 source src/widgets/cwd.sh
 
-pf_engine_render
+source src/core/prompt.sh
+
+pf_prompt_update
+printf "%q\n" "$PS1"
 echo
