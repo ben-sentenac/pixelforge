@@ -1,5 +1,5 @@
 #!usr/bin/env bash
 
-pf_component_host_render() {
-    hostname
+pf_provider_host() {
+    pf_model_set "host.name" "$(hostname)"
 }

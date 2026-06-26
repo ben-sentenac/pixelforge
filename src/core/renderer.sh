@@ -3,26 +3,25 @@
 # Renderer
 # Build the final prompt from registered components.
 
-pf_renderer_render_component() {
+pf_renderer_run_provider() {
     local component="$1"
-    local function_name="pf_component_${component}_render"
+    local function_name="pf_provider_${component}"
+    local value=""
 
     if declare -F "$function_name" > /dev/null; then
-        "$function_name"
+       "$function_name"
     else
-        printf "[missing:%s]" "$component"
+        pf_model_set "${component}.error" "missing provider"
     fi
 }
 
 
 pf_renderer_render() {
-    local output=""
-    local rendered=""
+     pf_model_clear
 
     while IFS= read -r component; do
-        rendered="$(pf_renderer_render_component "$component")"
-        output+="${rendered} "
+        pf_renderer_run_provider "$component"
     done < <(pf_registered_components)
 
-    printf "%s" "$output"
+    pf_layout_render
 }

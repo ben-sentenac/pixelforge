@@ -1,9 +1,9 @@
 #!usr/bin/env bash
 
-pf_component_cwd_render() {
+pf_provider_cwd() {
     if [[ "$PWD" == "$HOME"* ]]; then
-        printf "~%s" "${PWD#$HOME}"
+        pf_model_set "cwd.path" "~${PWD#$HOME}"
     else
-        printf "%s" "$PWD"
+        pf_model_set "cwd.path" "$PWD"
     fi
 }

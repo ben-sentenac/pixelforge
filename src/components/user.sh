@@ -1,5 +1,5 @@
 #!usr/bin/env bash
 
-pf_component_user_render() {
-    printf "%s" "$USER"
+pf_provider_user() {
+    pf_model_set "user.name" "$USER"
 }
