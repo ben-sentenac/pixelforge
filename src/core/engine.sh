@@ -3,9 +3,12 @@
 #Engine
 # Orchestrate prompt rendering
 
+#!/usr/bin/env bash
+
 source "${PIXELFORGE_ROOT}/src/core/config.sh"
 source "${PIXELFORGE_ROOT}/src/core/registry.sh"
 source "${PIXELFORGE_ROOT}/src/core/bootstrap.sh"
+source "${PIXELFORGE_ROOT}/src/layouts/minimal.sh"
 source "${PIXELFORGE_ROOT}/src/core/renderer.sh"
 
 pf_engine_render() {

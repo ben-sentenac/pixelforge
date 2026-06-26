@@ -34,10 +34,57 @@ No magic.
 
 ```text
 pixelforge/
-├── README.md
-├── install.sh
-├── themes/
-├── prompt/
-├── assets/
-├── screenshots/
-└── docs/
+│
+├── src/
+│   ├── core/
+│   │   ├── engine.sh
+│   │   ├── registry.sh
+│   │   ├── renderer.sh
+│   │   └── config.sh
+│   │
+│   ├── components/
+│   │   ├── user.sh
+│   │   ├── host.sh
+│   │   ├── cwd.sh
+│   │   ├── git.sh
+│   │   ├── prompt.sh
+│   │   └── ...
+│   │
+│   ├── ansi/
+│   │   ├── colors.sh
+│   │   ├── cursor.sh
+│   │   └── unicode.sh
+│   │
+│   ├── layouts/
+│   │
+│   ├── skins/
+│   │
+│   └── utils/
+│
+├── tests/
+│
+├── docs/
+│
+└── screenshots/
+
+## architecture moteur
+
+Configuration
+      │
+      ▼
+ Bootstrap
+      │
+      ▼
+ Registry
+      │
+      ▼
+ Components
+      │
+      ▼
+ Render Model
+      │
+      ▼
+ Layout
+      │
+      ▼
+ Terminal
