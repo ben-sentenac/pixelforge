@@ -1,11 +1,17 @@
 #!usr/bin/env bash
 
-pf_widget_cwd_render() {
+_pf_widget_cwd_home() {
+    pf_model_get "cwd.home"
+}
 
-     if ! pf_model_has "cwd.path"; then
+_pf_widget_cwd_basename() {
+    pf_model_get "cwd.basename"
+}
+
+pf_widget_cwd_render() {
+    if ! pf_model_has "cwd.home"; then
         return
     fi
 
-    printf "📁 %s\n" "$(pf_model_get "cwd.path")"
-
+    printf "📁 %s\n" "$(_pf_widget_cwd_home)"
 }
