@@ -12,4 +12,4 @@ source "$PIXELFORGE_ROOT/src/widgets/cwd.sh"
 
 source "$PIXELFORGE_ROOT/src/core/prompt.sh"
 
-pf_prompt_update
+PROMPT_COMMAND="pf_prompt_update"
