@@ -5,7 +5,7 @@
 
 pf_renderer_render_component() {
     local component="$1"
-    local function_name="pf_component_${component}"
+    local function_name="pf_component_${component}_render"
 
     if declare -F "$function_name" > /dev/null; then
         "$function_name"
