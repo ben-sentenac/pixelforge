@@ -14,4 +14,7 @@ source "$PIXELFORGE_ROOT/src/widgets/git.sh"
 
 source "$PIXELFORGE_ROOT/src/core/prompt.sh"
 
+# Initialize PixelForge theme
+pf_initialize
+
 PROMPT_COMMAND="pf_prompt_update"

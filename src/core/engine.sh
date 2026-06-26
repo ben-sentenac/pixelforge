@@ -9,14 +9,13 @@ source "${PIXELFORGE_ROOT}/src/core/config.sh"
 source "${PIXELFORGE_ROOT}/src/core/registry.sh"
 source "${PIXELFORGE_ROOT}/src/core/bootstrap.sh"
 source "${PIXELFORGE_ROOT}/src/core/theme.sh"
+source "${PIXELFORGE_ROOT}/src/core/init.sh"
 source "${PIXELFORGE_ROOT}/src/layouts/minimal.sh"
 source "${PIXELFORGE_ROOT}/src/core/renderer.sh"
 
 
 pf_engine_render() {
-    pf_theme_load
     pf_clear_components
     pf_bootstrap_components
     pf_renderer_render
-
 }

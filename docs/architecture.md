@@ -308,6 +308,8 @@ Every directory has a single responsibility.
 
 ---
 
+
+
 # 9. Design Principles
 
 PixelForge follows these engineering principles.
@@ -446,3 +448,53 @@ The following rule takes precedence over every implementation detail.
 Any new feature must respect this separation of responsibilities.
 
 If a feature requires breaking this rule, the architecture should be reviewed before implementation.
+
+## Initialization and Rendering
+
+PixelForge separates initialization from rendering.
+
+Initialization happens once when PixelForge is loaded.
+
+Rendering happens every time Bash displays a new prompt.
+
+```text
+Startup
+   ↓
+Initialization
+   ↓
+Rendering
+
+nitialization
+
+Initialization is responsible for stable runtime setup.
+
+Examples:
+
+loading configuration;
+loading the active skin;
+preparing stable context values;
+validating required files.
+
+Initialization must not collect dynamic prompt data.
+
+Rendering
+
+Rendering is responsible for dynamic prompt data.
+
+Examples:
+
+current working directory;
+Git state;
+command status;
+Node.js project state;
+Docker project state.
+
+Rendering may happen many times during a shell session.
+
+For this reason, rendering should remain fast and avoid unnecessary repeated work.
+
+Rule
+
+Stable data belongs to initialization.
+
+Dynamic data belongs to rendering.
