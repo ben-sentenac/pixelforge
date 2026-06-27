@@ -19,6 +19,14 @@ pf_theme_load() {
         return 1
     fi
 
+    if [[ ! -f "$skin_dir/palette.sh" ]]; then
+    echo "PixelForge error: missing palette.sh in $skin_dir" >&2
+    return 1
+    fi
+
+
+
     source "$skin_dir/icons.sh"
     source "$skin_dir/spacing.sh"
+    source "$skin_dir/palette.sh"
 }

@@ -1,21 +1,23 @@
-Sprint Theme API 26-05-2026
+Sprint 1
+✅ Architecture
 
-Sprint Theme API
+Sprint 2
+✅ Theme API
 
-Étape 1
-Audit des widgets v
+Sprint 3
+➡ ANSI Color Engine
 
-Étape 2
-Migration complète vers PF_ICON_* v
+Sprint 4
+➡ GameBoy Skin
 
-Étape 3
-Validation v
+Sprint 5
+➡ Matrix Skin
 
-Étape 4
-Introduction de palette.sh
+Sprint 6
+➡ Widgets avancés (Node, Docker, Python, Temps...)
 
-Étape 5
-Ajout des couleurs ANSI
+Sprint 7
+➡ Configuration utilisateur
 
-Étape 6
-Création du skin GameBoy
+Sprint 8
+➡ Tests automatisés et ShellCheck
