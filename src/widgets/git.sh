@@ -18,12 +18,12 @@ _pf_widget_git_branch() {
 
 _pf_widget_git_dirty_marker () {
     if [[ "$(pf_model_get "git.dirty")" == "true" ]]; then
-        printf "%s%s*%s" "$PF_COLOR_WARNING" "$PF_ICON_GAP" "$PF_COLOR_RESET"
+        printf "%s*"  "$PF_ICON_GAP"
     fi
 }
 
 
-_pf_widget_git_sync_status() {
+_pf_widget_git_sync_indicators() {
     local ahead
     local behind
 
@@ -31,22 +31,29 @@ _pf_widget_git_sync_status() {
     behind="$(pf_model_get "git.behind")"
 
     if [[ "$ahead" != "0" ]]; then
-        printf "%s%s↑%s%s" "$PF_COLOR_SUCCESS" "$PF_ICON_GAP" "$ahead" "$PF_COLOR_RESET"
+        printf "%%s↑%s" "$PF_ICON_GAP" "$ahead"
     fi
 
     if [[ "$behind" != "0" ]]; then
-        printf "%s%s↓%s%s" "$PF_COLOR_ERROR" "$PF_ICON_GAP" "$behind" "$PF_COLOR_RESET"
+        printf "%s↓%s" "$PF_ICON_GAP" "$behind"
     fi
 }
 
 _pf_widget_git_build_output() {
     local output=""
+    local branch
+    local dirty
+    local sync
 
-    output+="${PF_COLOR_PRIMARY}${PF_ICON_GIT}${PF_COLOR_RESET}"
+    branch="$(_pf_widget_git_branch)"
+    dirty="$(_pf_widget_git_dirty_marker)"
+    sync="$(_pf_widget_git_sync_indicators)"
+
+    output+="${PF_ICON_GIT}"
     output+="${PF_ICON_GAP}"
-    output+="${PF_COLOR_SECONDARY}$(_pf_widget_git_branch)${PF_COLOR_RESET}"
-    utput+="$(_pf_widget_git_dirty_marker)"
-    output+="$(_pf_widget_git_sync_status)"
+    output+="${branch}"
+    utput+="${dirty}"
+    output+="${sync}"
 
     printf "%s" "$output"
 
