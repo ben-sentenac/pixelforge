@@ -33,5 +33,5 @@ pf_widget_git_render() {
         sync+=" ↓${behind}"
     fi
 
-    printf "🌿 %s%s%s\n" "$branch" "$marker" "$sync"
+   printf "%s%s%s%s%s\n" "$PF_ICON_GIT" "$PF_ICON_GAP" "$branch" "$marker" "$sync"
 }
