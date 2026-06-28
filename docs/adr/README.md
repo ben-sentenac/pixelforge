@@ -37,7 +37,9 @@ Date: YYYY-MM-DD
 
 # Current ADRs
 
-* ADR-0001 — Render Model
-* ADR-0002 — Provider / Widget Separation
-* ADR-0003 — Initialization and Rendering Lifecycle
-* ADR-0004 — Theme API
+* ADR-0001 - Render Model
+* ADR-0002 - Provider / Widget Separation
+* ADR-0003 - Initialization and Rendering Lifecycle
+* ADR-0004 - Theme API
+* ADR-0005  - Widget API
+* ADR-0006  - Module entry points
