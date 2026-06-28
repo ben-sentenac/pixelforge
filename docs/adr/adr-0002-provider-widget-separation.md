@@ -52,3 +52,5 @@ Trade-offs:
 * requires consistent naming conventions.
 
 This decision is mandatory for all future components.
+
+Décision prise dans le cadre de la phase Foundation (v0.1.0-alpha). Toute remise en cause de cette décision devra faire l'objet d'un nouvel ADR.

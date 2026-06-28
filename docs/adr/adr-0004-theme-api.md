@@ -53,3 +53,5 @@ Trade-offs:
 * widgets must avoid shortcuts and hardcoded icons.
 
 This decision prepares PixelForge for multiple skins while preserving clean architecture.
+
+Décision prise dans le cadre de la phase Foundation (v0.1.0-alpha). Toute remise en cause de cette décision devra faire l'objet d'un nouvel ADR.

@@ -71,3 +71,5 @@ Trade-offs:
 * dynamic features must not be added to initialization by mistake.
 
 This decision defines the lifecycle of PixelForge.
+
+Décision prise dans le cadre de la phase Foundation (v0.1.0-alpha). Toute remise en cause de cette décision devra faire l'objet d'un nouvel ADR.

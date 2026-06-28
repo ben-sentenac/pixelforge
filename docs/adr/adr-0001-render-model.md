@@ -62,3 +62,5 @@ This decision supports the core rule:
 Providers collect data.
 The Render Model stores data.
 Widgets render data.
+
+Décision prise dans le cadre de la phase Foundation (v0.1.0-alpha). Toute remise en cause de cette décision devra faire l'objet d'un nouvel ADR.
