@@ -6,7 +6,6 @@
 pf_renderer_run_provider() {
     local component="$1"
     local function_name="pf_provider_${component}"
-    local value=""
 
     if declare -F "$function_name" > /dev/null; then
        "$function_name"

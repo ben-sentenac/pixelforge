@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+# shellcheck disable=SC2034
 PF_ANSI_RESET='\[\e[0m\]'
 
 PF_ANSI_BLACK='\[\e[30m\]'

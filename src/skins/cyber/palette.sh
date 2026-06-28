@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+# shellcheck disable=SC2034
 # Color Palette mapping
 
 PF_COLOR_PRIMARY="$PF_ANSI_CYAN"

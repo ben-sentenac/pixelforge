@@ -8,7 +8,7 @@ pf_provider_cwd() {
     local depth
 
     if [[ "$full" == "$HOME"* ]]; then
-        home="~${full#$HOME}"
+        home="~${full#"$HOME"}"
     fi
 
     basename="$(basename "$full")"

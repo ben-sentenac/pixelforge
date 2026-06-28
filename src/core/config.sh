@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+# shellcheck disable=SC2034
 # PixelForge default configuration
 
 PF_VERSION="0.1.0"

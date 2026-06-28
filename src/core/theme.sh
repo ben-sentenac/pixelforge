@@ -36,6 +36,7 @@ _pf_theme_require_file() {
 _pf_load_theme_file() {
     local file="$1"
 
+    # shellcheck source=/dev/null
     source "$file"
 }
 
@@ -67,7 +68,8 @@ _pf_theme_load_optional_files() {
 }
 
 pf_theme_load() {
-    local skin_dir="$(_pf_theme_skin_dir)"
+    local skin_dir
+    skin_dir="$(_pf_theme_skin_dir)"
 
     _pf_theme_require_dir "$skin_dir" || return 1
 
