@@ -21,7 +21,7 @@ _pf_theme_required_files() {
 }
 
 _pf_theme_optional_files() {
-     printf "%s\n" "borders.sh" "sterminal.sh"
+     printf "%s\n" "borders.sh" "terminal.sh"
 }
 
 _pf_theme_require_file() {
@@ -33,7 +33,7 @@ _pf_theme_require_file() {
     fi
 }
 
-_pf_load_file() {
+_pf_load_theme_file() {
     local file="$1"
 
     source "$file"
@@ -48,7 +48,7 @@ _pf_theme_load_required_files() {
         file_path="$skin_dir/$file_name"
 
         _pf_theme_require_file "$file_path" || return 1
-        _pf_load_file "$file_path"
+        _pf_load_theme_file "$file_path"
     done < <(_pf_theme_required_files)
 }
 
@@ -60,7 +60,7 @@ _pf_theme_load_optional_files() {
      while IFS= read -r file_name; do
         file_path="$skin_dir/$file_name"
         if [[ -f "$file_path" ]]; then
-            _pf_load_file "$file_path"
+            _pf_load_theme_file "$file_path"
         fi
 
     done < <(_pf_theme_optional_files)
