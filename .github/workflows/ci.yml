@@ -1,22 +1,33 @@
 name: CI
 
 on:
-push:
-branches:
-- main
-pull_request:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-quality:
-name: Quality checks
-runs-on: ubuntu-latest
+  quality:
+    name: Quality Checks
+    runs-on: ubuntu-latest
 
-steps:
-  - name: Checkout repository
-    uses: actions/checkout@v4
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-  - name: Install ShellCheck
-    run: sudo apt-get update && sudo apt-get install -y shellcheck shfmt
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y shellcheck shfmt
 
-  - name: Run project checks
-    run: ./scripts/check.sh
+      - name: Make scripts executable
+        run: |
+          chmod +x scripts/check.sh
+          chmod +x scripts/shellcheck.sh
+          chmod +x scripts/format.sh
+          chmod +x scripts/smoke.sh
+
+      - name: Run quality checks
+        run: ./scripts/check.sh
