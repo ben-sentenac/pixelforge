@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-export PIXELFORGE_ROOT="${PIXELFORGE_ROOT:-$HOME/Workspace/projects/pixelForge}"
+PIXELFORGE_ENTRYPOINT="${BASH_SOURCE[0]}"
+PIXELFORGE_ROOT="$(cd "$(dirname "$PIXELFORGE_ENTRYPOINT")" && pwd)"
+export PIXELFORGE_ROOT
 
 source "$PIXELFORGE_ROOT/src/core/index.sh"
 source "$PIXELFORGE_ROOT/src/providers/index.sh"
