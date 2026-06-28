@@ -16,7 +16,7 @@ _pf_widget_git_branch() {
     printf "%s" "$branch"
 }
 
-_pf_widget_git_dirty_marker () {
+_pf_widget_git_dirty_marker() {
     if [[ "$(pf_model_get "git.dirty")" == "true" ]]; then
         printf "%s%s*%s"  "$PF_ICON_GAP" "$PF_COLOR_WARNING" "$PF_COLOR_RESET"
     fi
@@ -31,7 +31,7 @@ _pf_widget_git_sync_indicators() {
     behind="$(pf_model_get "git.behind")"
 
     if [[ "$ahead" != "0" ]]; then
-        printf "%%s↑%s%s" "$PF_ICON_GAP" "$PF_COLOR_SUCCESS" "$ahead" "$PF_COLOR_RESET"
+        printf "%s%s↑%s%s" "$PF_ICON_GAP" "$PF_COLOR_SUCCESS" "$ahead" "$PF_COLOR_RESET"
     fi
 
     if [[ "$behind" != "0" ]]; then
