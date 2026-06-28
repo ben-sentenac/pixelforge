@@ -1,0 +1,5 @@
+- [x] nettoyer src/core/theme.sh
+- introduire _pf_theme_require_file
+- charger strictement icons / spacing / palette
+- préparer borders / terminal plus tard
+- ne pas ajouter d’abstraction inutile
