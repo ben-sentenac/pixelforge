@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+# shellcheck disable=SC2034
+PF_ICON_USER="USER"
+PF_ICON_HOST="HOST"
+PF_ICON_CWD="DIR "
+PF_ICON_GIT="GIT "
+PF_ICON_PROMPT=">"
+PF_ICON_LOGO="VT100"
