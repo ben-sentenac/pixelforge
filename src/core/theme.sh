@@ -16,6 +16,10 @@ _pf_theme_require_dir() {
     fi
 }
 
+_pf_theme_required_files() {
+    printf "%s\n" "icons.sh" "spacing.sh" "palette.sh"
+}
+
 _pf_theme_require_file() {
     local file="$1"
 
@@ -25,16 +29,29 @@ _pf_theme_require_file() {
     fi
 }
 
+_pf_load_file() {
+    local file="$1"
+
+    source "$file"
+}
+
+_pf_theme_load_files() {
+    local skin_dir="$1"
+    local file_name
+    local file_path
+
+    while IFS= read -r file_name; do
+        file_path="$skin_dir/$file_name"
+
+        _pf_theme_require_file "$file_path" || return 1
+        _pf_load_file "$file_path"
+    done < <(_pf_theme_required_files)
+}
+
 pf_theme_load() {
     local skin_dir="$(_pf_theme_skin_dir)"
 
     _pf_theme_require_dir "$skin_dir" || return 1
 
-    _pf_theme_require_file "$skin_dir/icons.sh" || return 1
-    _pf_theme_require_file "$skin_dir/spacing.sh" || return 1
-    _pf_theme_require_file "$skin_dir/palette.sh" || return 1
-
-    source "$skin_dir/icons.sh"
-    source "$skin_dir/spacing.sh"
-    source "$skin_dir/palette.sh"
+   _pf_theme_load_files "$skin_dir"
 }
