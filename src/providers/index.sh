@@ -1,4 +1,4 @@
-#!usr/bin/env bash
+#!/usr/bin/env bash
 
 source "${PIXELFORGE_ROOT}/src/providers/user.sh"
 source "${PIXELFORGE_ROOT}/src/providers/host.sh"

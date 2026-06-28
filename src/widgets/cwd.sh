@@ -1,4 +1,4 @@
-#!usr/bin/env bash
+#!/usr/bin/env bash
 
 _pf_widget_cwd_home() {
     pf_model_get "cwd.home"
