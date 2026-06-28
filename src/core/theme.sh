@@ -20,6 +20,10 @@ _pf_theme_required_files() {
     printf "%s\n" "icons.sh" "spacing.sh" "palette.sh"
 }
 
+_pf_theme_optional_files() {
+     printf "%s\n" "borders.sh" "sterminal.sh"
+}
+
 _pf_theme_require_file() {
     local file="$1"
 
@@ -35,7 +39,7 @@ _pf_load_file() {
     source "$file"
 }
 
-_pf_theme_load_files() {
+_pf_theme_load_required_files() {
     local skin_dir="$1"
     local file_name
     local file_path
@@ -48,10 +52,25 @@ _pf_theme_load_files() {
     done < <(_pf_theme_required_files)
 }
 
+_pf_theme_load_optional_files() {
+    local skin_dir="$1"
+    local file_name
+    local file_path
+
+     while IFS= read -r file_name; do
+        file_path="$skin_dir/$file_name"
+        if [[ -f "$file_path" ]]; then
+            _pf_load_file "$file_path"
+        fi
+
+    done < <(_pf_theme_optional_files)
+}
+
 pf_theme_load() {
     local skin_dir="$(_pf_theme_skin_dir)"
 
     _pf_theme_require_dir "$skin_dir" || return 1
 
-   _pf_theme_load_files "$skin_dir"
+   _pf_theme_load_required_files "$skin_dir" || return 1
+   _pf_theme_load_optional_files "$skin_dir"
 }
