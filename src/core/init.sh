@@ -4,4 +4,5 @@
 
 pf_initialize() {
     pf_theme_load
+    pf_theme_initialize
 }

@@ -21,7 +21,7 @@ _pf_theme_required_files() {
 }
 
 _pf_theme_optional_files() {
-     printf "%s\n" "borders.sh" "terminal.sh"
+     printf "%s\n" "init.sh" "borders.sh" "terminal.sh"
 }
 
 _pf_theme_require_file() {
@@ -65,6 +65,12 @@ _pf_theme_load_optional_files() {
         fi
 
     done < <(_pf_theme_optional_files)
+}
+
+pf_theme_initialize() {
+    if declare -F pf_theme_on_initialize >/dev/null; then
+        pf_theme_on_initialize
+    fi
 }
 
 pf_theme_load() {
