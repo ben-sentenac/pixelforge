@@ -1,99 +1,59 @@
 # PixelForge
 
-> A modular Bash prompt engine inspired by pixel art, retro terminals and clean software architecture.
+> A modular Bash prompt framework focused on clean architecture, extensibility and learning.
 
-PixelForge is not just another Bash theme.
+PixelForge is not just another Bash prompt.
 
-It is a learning project designed to understand how modern software architecture principles can be applied to shell scripting.
+It is an educational project that demonstrates how to design a maintainable software architecture using only Bash.
 
-The project explores:
+The goal is to build a prompt engine that remains simple, modular and easy to extend while following software engineering best practices.
 
-* Bash programming
-* PS1 and PROMPT_COMMAND
-* ANSI escape sequences
-* UTF-8 rendering
-* Prompt architecture
-* Software design
-* Separation of responsibilities
-* Documentation-driven development
+---
 
-The philosophy is the same as the Linux Engineering Book:
+# Philosophy
 
-```text
-Understand
-↓
+PixelForge follows a simple principle:
 
-Experiment
-↓
-
-Document
-↓
-
-Test
-↓
-
-Use
-↓
-
-Improve
 ```
+Understand
+        ↓
+Design
+        ↓
+Document
+        ↓
+Implement
+        ↓
+Review
+```
+
+Every feature must preserve the overall architecture.
+
+Small increments are preferred over large rewrites.
+
+Documentation is considered part of the code.
 
 ---
 
 # Goals
 
-PixelForge aims to build a prompt engine that is:
+PixelForge aims to demonstrate that even a Bash project can be designed like a modern software system.
 
-* modular;
-* maintainable;
-* extensible;
-* fun to customize;
-* pleasant to study.
+Core objectives:
 
-The project favors clarity over cleverness.
-
----
-
-# Features
-
-Current features include:
-
-* modular rendering pipeline;
-* provider/widget architecture;
-* Render Model;
-* Theme API;
-* configurable layouts;
-* configurable skins;
-* Git integration;
-* dynamic prompt updates using PROMPT_COMMAND.
-
-Future versions will introduce:
-
-* ANSI color palettes;
-* additional themes;
-* optional widgets;
-* performance improvements;
-* automated testing.
+* modular architecture;
+* clear separation of responsibilities;
+* reusable components;
+* clean Theme API;
+* extensible Widget API;
+* educational codebase.
 
 ---
 
 # Architecture
 
-PixelForge follows a layered architecture.
+PixelForge is built around a rendering pipeline.
 
 ```text
-PROMPT_COMMAND
-        │
-        ▼
-pf_prompt_update()
-        │
-        ▼
-Engine
-        │
-        ▼
-Registry
-        │
-        ▼
 Providers
         │
         ▼
@@ -109,81 +69,197 @@ Layouts
 Theme
         │
         ▼
-PS1
+ANSI Engine
+        │
+        ▼
+Prompt
 ```
 
-Each layer has a single responsibility.
+Each layer has exactly one responsibility.
 
 ---
 
 # Project Structure
 
 ```text
+pixelforge/
+
+docs/
 src/
+
+src/
+├── ansi/
 ├── core/
-├── providers/
-├── widgets/
 ├── layouts/
+├── providers/
 ├── skins/
-└── utils/
+└── widgets/
 ```
 
-The complete architecture is documented in:
+Each module exposes a single public entry point:
 
-* docs/architecture.md
+```
+index.sh
+```
 
 ---
 
-# Getting Started
+# Core Concepts
 
-Clone the repository.
+## Providers
 
-```bash
-git clone <repository>
+Providers collect information from the operating system.
+
+Examples:
+
+* current user;
+* hostname;
+* current directory;
+* Git repository state.
+
+Providers never perform rendering.
+
+---
+
+## Render Model
+
+The Render Model stores structured data.
+
+Example:
+
+```
+git.branch
+git.dirty
+cwd.home
+user.name
 ```
 
-Load PixelForge:
+It acts as the boundary between data collection and presentation.
 
-```bash
-source pixelforge.sh
-```
+---
 
-The prompt will automatically refresh through:
+## Widgets
 
-```bash
-PROMPT_COMMAND
-```
+Widgets transform Render Model data into visual output.
+
+Widgets:
+
+* never access the operating system;
+* never modify the Render Model;
+* only render data.
+
+---
+
+## Layouts
+
+Layouts decide how widgets are assembled.
+
+They contain no business logic.
+
+---
+
+## Themes
+
+Themes define the visual identity.
+
+A theme provides:
+
+* icons;
+* spacing;
+* semantic colors.
+
+Themes never contain rendering logic.
+
+---
+
+## ANSI Engine
+
+ANSI sequences are isolated from widgets.
+
+Themes map semantic colors to ANSI tokens.
+
+Widgets never manipulate escape sequences directly.
 
 ---
 
 # Documentation
 
-The project documentation is located in `docs/`.
+PixelForge documentation is considered part of the project.
 
-Core documents include:
+Main documents:
 
-* architecture.md
-* lifecycle.md
-* theme-api.md
-* principles.md
-* engineering-checklist.md
-* coding-style.md
-* adr/
+* Architecture
+* Lifecycle
+* Theme API
+* Widget API
+* Engineering Checklist
+* Coding Style
+* ADRs
 
-The documentation is considered the source of truth.
+---
+
+# Engineering Principles
+
+* One responsibility per module.
+* One responsibility per file.
+* Architecture before features.
+* Simplicity before abstraction.
+* Data before rendering.
+* Documentation before extension.
+
+---
+
+# Current Status
+
+Current architecture includes:
+
+* Core Engine
+* Theme Engine
+* ANSI Engine
+* Render Model
+* Theme API
+* Widget API
+* Module System (`index.sh`)
+
+Future work includes:
+
+* additional themes;
+* new widgets;
+* automated tests;
+* configuration system.
 
 ---
 
 # Roadmap
 
-Current priorities:
+Planned themes:
 
-* Theme API completion
-* ANSI color system
-* additional layouts
-* additional skins
-* testing
-* ShellCheck integration
+* Cyber
+* GameBoy
+* Matrix
+* Amber
+
+Future widgets:
+
+* Node.js
+* Docker
+* Kubernetes
+* Battery
+* Network
+* Time
+
+---
+
+# Contributing
+
+PixelForge follows a strict engineering workflow.
+
+Every contribution should:
+
+* preserve the architecture;
+* remain small and focused;
+* update the documentation when necessary;
+* follow the coding style.
 
 ---
 

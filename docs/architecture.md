@@ -1,500 +1,354 @@
 # PixelForge Architecture
 
-## 1. Vision
+Version: 0.1
 
-PixelForge is a modular Bash prompt engine inspired by retro computers, pixel art and classic developer workstations.
+This document describes the overall architecture of PixelForge.
 
-The project is primarily a learning laboratory.
+It is the architectural source of truth for the project.
 
-Its purpose is to understand how a modern shell prompt works by building every layer from scratch, without relying on heavy frameworks or hidden abstractions.
+Implementation details belong to the source code.
 
-PixelForge is designed around software engineering principles rather than visual customization alone.
-
-The project values simplicity, maintainability and explicit design over feature count.
+Design decisions belong to the ADRs.
 
 ---
 
-# 2. Philosophy
+# Overview
 
-PixelForge follows a simple development philosophy.
+PixelForge is built as a layered rendering engine.
 
-```
-Understand
-        ↓
-Experiment
-        ↓
-Document
-        ↓
-Test
-        ↓
-Use
-        ↓
-Improve
-```
+Its primary objective is to separate data collection from presentation.
 
-Core principles:
-
-* understand before coding;
-* document before extending;
-* small incremental changes;
-* one responsibility per component;
-* explicit code over clever code;
-* composition over duplication;
-* architecture before optimization;
-* avoid unnecessary abstractions.
-
-The objective is not to build features as quickly as possible.
-
-The objective is to build a prompt engine that remains understandable after years of evolution.
-
----
-
-# 3. Goals
-
-PixelForge aims to:
-
-* learn advanced Bash scripting;
-* understand shell prompt internals;
-* explore ANSI escape sequences;
-* build a modular rendering engine;
-* experiment with software architecture;
-* remain dependency free whenever possible;
-* keep startup time minimal;
-* serve as an educational project.
-
----
-
-# 4. Non-goals
-
-PixelForge is **not** intended to become:
-
-* another Starship clone;
-* a shell framework;
-* a plugin marketplace;
-* a feature race;
-* a benchmarking project;
-* a replacement for existing shell environments.
-
-The project intentionally prioritizes learning and architecture over feature quantity.
-
----
-
-# 5. High-Level Architecture
-
-The rendering pipeline is organized into several independent layers.
-
-```
-Bash
-
-    │
-
-PROMPT_COMMAND
-
-    │
-
-Prompt
-
-    │
-
-Engine
-
-    │
-
+```text
+Operating System
+        │
+        ▼
 Providers
-
-    │
-
+        │
+        ▼
 Render Model
-
-    │
-
+        │
+        ▼
 Widgets
-
-    │
-
-Layout
-
-    │
-
-Skin
-
-    │
-
-PS1
+        │
+        ▼
+Layouts
+        │
+        ▼
+Theme
+        │
+        ▼
+ANSI Engine
+        │
+        ▼
+Prompt (PS1)
 ```
 
-Each layer owns exactly one responsibility.
-
-No layer should bypass another.
+Each layer has a single responsibility.
 
 ---
 
-# 6. Layer Responsibilities
+# Module Architecture
 
-## Engine
+The project is organized into independent modules.
 
-The engine orchestrates the rendering process.
+```text
+src/
+├── ansi/
+├── core/
+├── layouts/
+├── providers/
+├── skins/
+└── widgets/
+```
+
+Each module exposes a single public entry point:
+
+```text
+index.sh
+```
+
+External modules must never source internal files directly.
+
+Instead, they load the module through its `index.sh`.
+
+Example:
+
+```bash
+source src/widgets/index.sh
+```
+
+---
+
+# Rendering Pipeline
+
+Every prompt refresh follows the same execution flow.
+
+```text
+pf_prompt_update
+        │
+        ▼
+pf_engine_render
+        │
+        ▼
+Bootstrap Components
+        │
+        ▼
+Providers
+        │
+        ▼
+Render Model
+        │
+        ▼
+Layout
+        │
+        ▼
+Widgets
+        │
+        ▼
+Theme
+        │
+        ▼
+Prompt
+```
+
+The pipeline is deterministic.
+
+Each layer only communicates with the next one.
+
+---
+
+# Core Module
+
+The Core module orchestrates the rendering process.
 
 Responsibilities:
 
-* initialize rendering;
-* execute providers;
-* invoke layouts;
-* produce the final prompt.
+* initialization;
+* prompt rendering;
+* registry management;
+* theme loading;
+* renderer orchestration.
 
-The engine never contains business logic.
+The Core module never collects system data.
 
 ---
 
-## Providers
+# Providers
 
-Providers collect information from the operating system.
+Providers are responsible for collecting data.
 
 Examples:
 
 * current user;
 * hostname;
 * current working directory;
-* Git repository;
-* Node.js version.
+* Git repository state.
 
-Providers only populate the Render Model.
+Providers write structured values into the Render Model.
 
-Providers never display anything.
+Providers never perform rendering.
 
 ---
 
-## Render Model
+# Render Model
 
-The Render Model stores structured information collected by providers.
+The Render Model is the boundary between data collection and presentation.
 
-Examples:
+It stores structured values.
 
-```
+Example:
+
+```text
 user.name
-
 host.name
-
 cwd.home
-
 git.branch
-
 git.dirty
 ```
 
-The Render Model acts as the single source of runtime data during prompt rendering.
+The Render Model contains data only.
+
+No presentation logic belongs here.
 
 ---
 
-## Widgets
+# Widgets
 
-Widgets render one specific concept.
+Widgets transform Render Model data into visual output.
 
-Examples:
+Widgets:
 
-* User widget
-* Git widget
-* Current directory widget
+* read the Render Model;
+* never access the operating system;
+* never modify stored data;
+* never communicate with providers.
 
-Widgets consume data from the Render Model.
+Each widget exposes exactly one public function.
 
-Widgets never execute external commands.
+Example:
+
+```bash
+pf_widget_git_render
+```
+
+Helper functions remain private.
 
 ---
 
-## Layouts
+# Layouts
 
 Layouts compose widgets.
-
-A layout decides:
-
-* ordering;
-* grouping;
-* spacing;
-* overall structure.
-
-Layouts never collect data.
-
----
-
-## Skins
-
-Skins define visual identity.
 
 Responsibilities:
 
-* colors;
+* determine widget order;
+* build the final prompt structure.
+
+Layouts never collect data.
+
+Layouts never contain business logic.
+
+---
+
+# Theme Engine
+
+The Theme Engine loads the active skin.
+
+A skin defines the visual identity of the prompt.
+
+Current theme tokens include:
+
 * icons;
-* separators;
-* decorative elements.
+* spacing;
+* semantic colors.
 
-A skin never changes the logical structure of the prompt.
-
----
-
-# 7. Rendering Pipeline
-
-Every prompt rendering follows the same sequence.
-
-```
-PROMPT_COMMAND
-
-↓
-
-Prompt Update
-
-↓
-
-Engine
-
-↓
-
-Providers
-
-↓
-
-Render Model
-
-↓
-
-Widgets
-
-↓
-
-Layout
-
-↓
-
-Skin
-
-↓
-
-PS1
-```
-
-Each stage consumes the output of the previous stage.
+Themes contain no rendering logic.
 
 ---
 
-# 8. Project Structure
+# ANSI Engine
 
-```
-pixelforge/
+ANSI escape sequences are isolated from the rendering layer.
 
-docs/
+Widgets never manipulate ANSI sequences directly.
 
-src/
-
-    ansi/
-
-    core/
-
-    providers/
-
-    widgets/
-
-    layouts/
-
-    skins/
-
-    utils/
-
-tests/
-
-examples/
-```
-
-Every directory has a single responsibility.
-
----
-
-
-
-# 9. Design Principles
-
-PixelForge follows these engineering principles.
-
-## Single Responsibility
-
-Each file should have one purpose.
-
-## Separation of Concerns
-
-Data collection, rendering and styling remain independent.
-
-## Explicit over Implicit
-
-Avoid hidden behavior.
-
-Prefer readable code over clever tricks.
-
-## Composition over Duplication
-
-Build larger behaviors by assembling small components.
-
-## Data First
-
-Providers produce data.
-
-Widgets consume data.
-
-Layouts compose widgets.
-
-Skins decorate widgets.
-
----
-
-# 10. Public Internal API
-
-Current public engine API.
-
-```
-pf_engine_render()
-
-pf_prompt_update()
-
-pf_model_set()
-
-pf_model_get()
-
-pf_model_has()
-
-pf_model_clear()
-
-pf_register_component()
-
-pf_registered_components()
-
-pf_clear_components()
-```
-
-These functions form the internal contract of the engine.
-
----
-
-# 11. Coding Conventions
-
-Public functions
-
-```
-pf_function()
-```
-
-Private functions
-
-```
-_pf_function()
-```
-
-Global variables
-
-```
-PF_VARIABLE
-```
-
-Local variables
-
-```
-local value
-```
-
-Rules:
-
-* use `local` whenever possible;
-* avoid global mutable state;
-* keep functions small;
-* avoid side effects;
-* comment intent rather than implementation.
-
----
-
-# 12. Future Evolution
-
-The architecture intentionally leaves room for future extensions.
-
-Potential additions include:
-
-* automatic provider discovery;
-* multiple layouts;
-* multiple skins;
-* theme API;
-* provider capabilities;
-* caching layer;
-* asynchronous providers;
-* plugin loading.
-
-These features should only be introduced when justified by real use cases.
-
-Premature abstraction should always be avoided.
-
----
-
-# 13. Architecture Rule
-
-The following rule takes precedence over every implementation detail.
-
-> Providers collect data.
->
-> The Render Model stores data.
->
-> Widgets render data.
->
-> Layouts compose widgets.
->
-> Skins define visual identity.
->
-> The Engine orchestrates everything.
-
-Any new feature must respect this separation of responsibilities.
-
-If a feature requires breaking this rule, the architecture should be reviewed before implementation.
-
-## Initialization and Rendering
-
-PixelForge separates initialization from rendering.
-
-Initialization happens once when PixelForge is loaded.
-
-Rendering happens every time Bash displays a new prompt.
+Instead:
 
 ```text
-Startup
-   ↓
-Initialization
-   ↓
-Rendering
+Widget
+        │
+        ▼
+Theme Token
+        │
+        ▼
+ANSI Token
+```
 
-nitialization
+This separation allows themes to remain independent from ANSI implementation details.
 
-Initialization is responsible for stable runtime setup.
+---
+
+# Module System
+
+Each directory is considered an independent module.
+
+Every module exposes a single entry point:
+
+```text
+index.sh
+```
+
+This allows internal implementations to evolve without affecting external modules.
+
+Current modules:
+
+* core
+* ansi
+* providers
+* widgets
+* layouts
+
+---
+
+# Dependency Rules
+
+Dependencies always point in one direction.
+
+```text
+Providers
+        │
+        ▼
+Render Model
+        │
+        ▼
+Widgets
+        │
+        ▼
+Layouts
+        │
+        ▼
+Theme
+        │
+        ▼
+ANSI
+```
+
+No layer may depend on a higher layer.
 
 Examples:
 
-loading configuration;
-loading the active skin;
-preparing stable context values;
-validating required files.
+Providers never know widgets.
 
-Initialization must not collect dynamic prompt data.
+Widgets never know providers.
 
-Rendering
+Themes never know the operating system.
 
-Rendering is responsible for dynamic prompt data.
+---
+
+# Architectural Principles
+
+PixelForge follows a small set of architectural rules.
+
+* One responsibility per module.
+* One responsibility per file.
+* Data before presentation.
+* Simplicity before abstraction.
+* Architecture before features.
+* Documentation before extension.
+
+These principles guide every architectural decision.
+
+---
+
+# Extensibility
+
+The architecture is designed to support future extensions without modifying existing layers.
 
 Examples:
 
-current working directory;
-Git state;
-command status;
-Node.js project state;
-Docker project state.
+New providers.
 
-Rendering may happen many times during a shell session.
+New widgets.
 
-For this reason, rendering should remain fast and avoid unnecessary repeated work.
+New layouts.
 
-Rule
+New themes.
 
-Stable data belongs to initialization.
+Additional ANSI capabilities.
 
-Dynamic data belongs to rendering.
+Each extension should integrate into the existing architecture instead of changing it.
+
+---
+
+# Summary
+
+PixelForge is designed as a modular rendering framework.
+
+The architecture separates:
+
+* data collection;
+* data storage;
+* rendering;
+* visual identity.
+
+This separation keeps the project simple, maintainable and extensible while preserving a clear educational value.
