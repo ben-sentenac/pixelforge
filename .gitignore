@@ -1,0 +1,15 @@
+# Editors
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Swap
+*.swp
+*.swo
+
+# Temporary
+*.bak
+*.tmp
