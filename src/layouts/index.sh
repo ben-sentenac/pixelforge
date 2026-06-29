@@ -2,4 +2,4 @@
 
 source "${PIXELFORGE_ROOT}/src/layouts/minimal.sh"
 source "${PIXELFORGE_ROOT}/src/layouts/vt100.sh"
-source "${PIXELFORGE_ROOT}/src/layouts/dispatcher.sh"
+source "${PIXELFORGE_ROOT}/src/layouts/layout-dispatcher.sh"
