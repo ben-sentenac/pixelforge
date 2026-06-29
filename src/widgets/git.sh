@@ -49,6 +49,12 @@ _pf_widget_git_build_output() {
     dirty="$(_pf_widget_git_dirty_marker)"
     sync="$(_pf_widget_git_sync_indicators)"
 
+     if [[ "${PF_GIT_STYLE:-default}" == "plain" ]]; then
+        output+="$branch $dirty"
+        printf "%s" "$output"
+        return 0
+    fi
+
     output+="${PF_COLOR_PRIMARY}${PF_ICON_GIT}${PF_COLOR_RESET}"
     output+="${PF_ICON_GAP}"
     output+="${PF_COLOR_SECONDARY}${branch}${PF_COLOR_RESET}"
