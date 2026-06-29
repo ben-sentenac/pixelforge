@@ -1,57 +1,133 @@
 # Theme API
 
-The Theme API provides visual tokens to widgets and layouts.
+The Theme API defines the visual identity and behavior of a PixelForge skin.
 
-Widgets must not hardcode colors, icons or separators.
+Themes customize the appearance of the framework without modifying the core architecture.
+
+Widgets and layouts must never hardcode colors, icons or spacing. They only consume theme tokens.
 
 ## Responsibilities
 
-The Theme API exposes:
+A theme is responsible for:
 
-- color tokens;
-- icon tokens;
-- spacing tokens;
-- separators.
+* visual configuration;
+* color palette;
+* icons;
+* spacing;
+* optional lifecycle hooks.
 
-## Skins
+Themes never collect system information.
 
-A skin defines a visual identity.
+They only define how information is presented.
 
-Each skin may provide:
+---
+
+# Skin Structure
+
+Every skin must provide the following files:
 
 ```text
 src/skins/<skin>/
-├── palette.sh
+├── config.sh
 ├── icons.sh
+├── palette.sh
 └── spacing.sh
-``
-Rule
+```
 
-Widgets do not know the visual style.
+Optional files:
 
-They only use tokens.
+```text
+src/skins/<skin>/
+├── init.sh
+├── borders.sh
+└── terminal.sh
+```
 
-### Theme Tokens
+---
+
+# Configuration
+
+`config.sh` defines the behavior of the skin.
+
+Example:
+
+```bash
+PF_LAYOUT="minimal"
+```
+
+The layout is selected by the rendering engine.
+
+---
+
+# Lifecycle Hooks
+
+Themes may expose lifecycle hooks.
+
+Currently supported:
+
+```bash
+pf_theme_on_initialize()
+```
+
+This hook is executed once when PixelForge is initialized.
+
+Typical use cases include:
+
+* startup banner;
+* welcome message;
+* terminal initialization.
+
+---
+
+# Theme Tokens
 
 ## Icons
 
+```text
 PF_ICON_LOGO
 PF_ICON_USER
 PF_ICON_HOST
 PF_ICON_CWD
 PF_ICON_GIT
 PF_ICON_PROMPT
+```
+
+---
 
 ## Spacing
 
+```text
 PF_ICON_GAP
 PF_SEPARATOR
+```
 
-## Colors (future)
+---
 
+## Colors
+
+```text
 PF_COLOR_PRIMARY
 PF_COLOR_SECONDARY
 PF_COLOR_SUCCESS
 PF_COLOR_WARNING
 PF_COLOR_ERROR
 PF_COLOR_MUTED
+PF_COLOR_RESET
+```
+
+---
+
+# Design Rules
+
+A theme:
+
+* defines appearance;
+* may define initialization behavior;
+* selects a layout through `PF_LAYOUT`.
+
+A theme must never:
+
+* execute providers;
+* modify the render model;
+* change the rendering engine;
+* contain business logic.

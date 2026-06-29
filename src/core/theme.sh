@@ -17,7 +17,7 @@ _pf_theme_require_dir() {
 }
 
 _pf_theme_required_files() {
-    printf "%s\n" "icons.sh" "spacing.sh" "palette.sh"
+    printf "%s\n" "config.sh" "icons.sh" "spacing.sh" "palette.sh"
 }
 
 _pf_theme_optional_files() {

@@ -55,3 +55,13 @@ Trade-offs:
 This decision prepares PixelForge for multiple skins while preserving clean architecture.
 
 Décision prise dans le cadre de la phase Foundation (v0.1.0-alpha). Toute remise en cause de cette décision devra faire l'objet d'un nouvel ADR.
+
+## Superseded Evolution
+
+This ADR originally defined the initial Theme API.
+
+The Theme API was later extended by:
+
+- ADR-0007 — Theme Configuration Contract
+
+The introduction of `config.sh` formalizes the configuration layer of a theme without changing the responsibilities defined in this ADR.

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-pf_layout_render() {
+pf_layout_minimal_render() {
 
     printf "\n%s\n\n" "${PF_SEPARATOR:-────────────────────────────}"
     printf "%s PixelForge\n\n" "${PF_ICON_LOGO:-██}"
